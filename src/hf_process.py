@@ -4,11 +4,19 @@ import numpy as np
 from jamkit.msg import sensor_raw
 from jamkit.msg import fingertip_adjusted
 pub_hf = rospy.Publisher('Fingertip_sensing_adjusted',sensor_raw, queue_size=10)
+##About : this program recieves the fingertip sensing values in the form of an array containing each fingertip,
+#coverts the 1d sensors to microT rather than voltage, and publishes the data on topic \Fingertip_sensing_adjusted with message type fingertip_adjusted.
+
+##The message fingertip_adjusted is a data structure comprising of 5 variables for each finger : thumb, index, middle, ring, little.
+# The thumb index and middle finger variables are each float64 arrays that contain the 3 axis sensor values (x,y,z field strength)
+# The ring and little finger contain a single float64 variable each due to the use of 1D magnetic sensors
+#Published values within the Fingertip_sensing_adjusted topic are in microT.
+
+##Authors: Ahmed Sami Deiri, Jamie Sengun  - Queen Mary University of London
 
 
 def process(sensing):
-    #ADD INPUTS HERE. Fix accordingly
-    #input hd_data
+
     #Order of variables, 1D SS495A sensors, 3D MLX90393 (x,y,z) readings per sensor
 
     hf_data=sensing.message
@@ -23,13 +31,11 @@ def process(sensing):
 
     fingertip_sensing = seperate(hf_data)
 
-    rospy.loginfo(fingertip_sensing)
-    pub_hf.publish(fingertip_sensing)
+    rospy.loginfo(fingertip_sensing)  #Logs fingertip sensing values and prints to terminal
+    pub_hf.publish(fingertip_sensing)  #Publishes fingertip sensing values to topic \Fingertip_sensing_adjusted.
 
-    #OUTPUT DATA
-    #output hf_data array of hall effect sensor data in microT units in an array.
 
-def seperate(hf_data):
+def seperate(hf_data):  # recieves array containing sensor values, seperates individual fingertips and returns type fingertip_adjusted
     fingertip_sensing = fingertip_adjusted()
     fingertip_sensing.little = hf_data[0]
     fingertip_sensing.ring = hf_data[1]
@@ -43,7 +49,7 @@ def seperate(hf_data):
 
 def listener():
     rospy.init_node('hf_process', anonymous=True)
-    rospy.Subscriber("force_raw", sensor_raw, process)  ##using this as I couldn't get both subscribers to synchronise without issues
+    rospy.Subscriber("force_raw", sensor_raw, process) ##subscribes to topic force_raw which contains the fingertip sensor data without processing in a float64 array
 
     rospy.spin()
 

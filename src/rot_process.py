@@ -5,6 +5,18 @@ from jamkit.msg import jamkit_joint_position
 from jamkit.msg import sensor_raw
 from std_msgs.msg import Float64
 pub = rospy.Publisher('pot_joint_angle',jamkit_joint_position, queue_size=10)
+
+##About: Initiates node rot_process which recieves an array containing float64 values for all the potentiometer I/O voltage values,
+#calculates the angle from the input voltage value
+#splits the potentiometers into the individual fingers using the data structure declared in jamkit_joint_position.msg
+#and publishes the joint angles to the topic \pot_joint_angle on datatype jamkit_joint_position
+
+##jamkit_joint_position data type is formed of 5 float64 arrays representing each finger : thumb,index,middle,ring,little
+#The array for each finger contains the joint angles, where finger[i] contains the joint i angle for finger "finger".
+# eg: index[1] contains the angle for joint 1 on the index finger
+
+##Authors: Ahmed Sami Deiri, Jamie Sengun - Queen Mary University of London
+
 def callback(rot_data):
     angles = rotationcalculator(rot_data.message)
     hand = jointsplit(angles)
@@ -83,7 +95,7 @@ def rotationcalculator(rot_data):
     #OUTPUT rot_data array of potentiometer angles in an array.
 def listener():
             rospy.init_node('rot_process', anonymous=True)
-            rospy.Subscriber("rotation_raw", sensor_raw, callback)  ##using this as I couldn't get both subscribers to synchronise without issues
+            rospy.Subscriber("rotation_raw", sensor_raw, callback)  ##subscribes to topic rotation_raw which provides voltage output values for the potentiometers in an array
 
             rospy.spin()
 
