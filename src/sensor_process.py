@@ -9,6 +9,13 @@ import numpy as np
 from jamkit.msg import sensor_raw
 
 
+##About: pulls serial data from arduino and converts it to float array for processing
+
+
+##Authors: Ahmed Sami Deiri, Jamie Sengun - Queen Mary University of London
+
+
+
 #Function that pulls serial data and converts it to float array for processing.
 #Function is called below.
 def ser_loop(ser,num_rot,num_1d,num_3d):

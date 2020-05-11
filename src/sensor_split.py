@@ -6,6 +6,13 @@ from std_msgs.msg import Float64
 pub_hf = rospy.Publisher('force_raw',sensor_raw, queue_size=10)
 pub_rot = rospy.Publisher('rotation_raw',sensor_raw, queue_size=10)
 
+##About: node \sensor_split subscribes to topic \hand_sensing_output where it recieves an array containing float values for the jamkit robot hand
+#sensor values including the 16 potentiometers, 2x 1D fingertip sensors, and 3x 3D Fingertip sensors with 3 values each for x y z.
+#outputs two arrays, one containing the potentiometer values, the other containing the fingertip sensor values. These arrays are
+#published onto topics rotation_raw and force_raw respectively.
+
+##Authors: Ahmed Sami Deiri, Jamie Sengun - Queen Mary University of London
+
 
 def split(sensingdata):
 
@@ -18,22 +25,18 @@ def split(sensingdata):
 
 
     rot_data=sensor_raw[0:num_rot-1]    #rotational potentiometer data
-    rospy.loginfo(rot_data)
-    pub_rot.publish(rot_data)
+    rospy.loginfo(rot_data)  ##logs potentiometer array and prints to terminal
+    pub_rot.publish(rot_data)  ##publish potentiometer values to topic \rotation_raw
 
     hf_data=sensor_raw[num_rot:len(sensor_raw)-1] #1D then 3D hall effect sensors
-    rospy.loginfo(hf_data)
-    pub_hf.publish(hf_data)
+    rospy.loginfo(hf_data)  ##logs fingertip sensor array and prints to terminal
+    pub_hf.publish(hf_data)  ##publish fingertip sensor values to topic \force_raw
 
     return()
-    #OUTPUT DATA
-    #rot_data to rot_process.py
-    #hf_data to hf_process.py
 
-
-def listener():
+def listener():  #subscribes to topic, calls function split() when a message is published on topic.
     rospy.init_node('sensor_split', anonymous=True)
-    rospy.Subscriber("hand_sensing_output", sensor_raw, split)  ##using this as I couldn't get both subscribers to synchronise without issues
+    rospy.Subscriber("hand_sensing_output", sensor_raw, split)  ##subscribes to topic hand_sensing_output. Expects a float array with 27 values.
 
     rospy.spin()
 
