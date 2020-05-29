@@ -1,0 +1,8 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+    <node name="interaction_generator" pkg="jamkit" type="interaction_generator.py" required="true"> </node>
+    <node name="sensor_split" pkg="jamkit" type="sensor_split.py" required="true"></node>
+    <node name="rot_process" pkg="jamkit" type="rot_process.py" required="true" output="screen"> </node>
+    <node name="hf_process" pkg="jamkit" type="hf_process.py" required="true" output="screen"></node>
+</launch>

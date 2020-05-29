@@ -8,6 +8,9 @@ import ax12_code as ax  #From https://github.com/cckieu/dxl_control by Aary Kieu
 
 
 #Functions for changing servo angles, needed unique functions for the sliders
+
+#Author: Jamie Sengun
+
 def F1(angle1):
     ax.move_ax(1,angle1) 
     

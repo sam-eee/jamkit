@@ -3,7 +3,9 @@ import rospy
 import numpy as np
 from jamkit.msg import sensor_raw
 from jamkit.msg import fingertip_adjusted
-pub_hf = rospy.Publisher('Fingertip_sensing_adjusted',sensor_raw, queue_size=10)
+from std_msgs.msg import Float64
+
+pub_hf = rospy.Publisher('Fingertip_sensing_adjusted',fingertip_adjusted, queue_size=10)
 ##About : this program recieves the fingertip sensing values in the form of an array containing each fingertip,
 #coverts the 1d sensors to microT rather than voltage, and publishes the data on topic \Fingertip_sensing_adjusted with message type fingertip_adjusted.
 
@@ -16,22 +18,30 @@ pub_hf = rospy.Publisher('Fingertip_sensing_adjusted',sensor_raw, queue_size=10)
 
 
 def process(sensing):
+    #rospy.loginfo(sensing.message)  #Logs fingertip sensing values and prints to terminal
 
     #Order of variables, 1D SS495A sensors, 3D MLX90393 (x,y,z) readings per sensor
 
     hf_data=sensing.message
     num_1d=2   #Number of 1D analog sensors
     num_3d=3   #Number of MLX90393 I2C sensors
+    microtrange = 67000
 
     #Convert 1D voltage readings to microT as per typical values from SS495A datasheet.
     #Assuming a 5V input voltage.
     #May need calibration to validate readings
-    for i in range(num_1d-1):
-        hf_data[i]=np.interp(hf_data[i],[0.2,4.8],[-67000,67000])
+    tempval = list(hf_data)
+    #print("initial")os
+    for i in range(num_1d):
+        #hf_data[i]=np.interp(hf_data[i],[0.2,4.8],[-67000,67000])
+        tempval[i] = (tempval[i] * microtrange * 2 /4.6) - microtrange
 
-    fingertip_sensing = seperate(hf_data)
-
-    rospy.loginfo(fingertip_sensing)  #Logs fingertip sensing values and prints to terminal
+    fingertip_sensing = seperate(tempval)
+    print("Node: hf_process")
+    print("Fingertip Sensors - published to fingertip_sensing_adjusted")
+    print(fingertip_sensing)
+    print('')
+    #rospy.loginfo(fingertip_sensing)  #Logs fingertip sensing values and prints to terminal
     pub_hf.publish(fingertip_sensing)  #Publishes fingertip sensing values to topic \Fingertip_sensing_adjusted.
 
 

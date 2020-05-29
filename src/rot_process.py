@@ -18,33 +18,43 @@ pub = rospy.Publisher('pot_joint_angle',jamkit_joint_position, queue_size=10)
 ##Authors: Ahmed Sami Deiri, Jamie Sengun - Queen Mary University of London
 
 def callback(rot_data):
+    #print("Message Recieved")
     angles = rotationcalculator(rot_data.message)
     hand = jointsplit(angles)
-    rospy.loginfo(hand)
+    #rospy.loginfo(hand)
+    print("Node: rot_process")
+    print("Joint Angles - published to topic pot_joint_angle")
+    print(hand)
+    print('')
     pub.publish(hand)
 
 def jointsplit(angles):  #creates hand with each finger of message type jamkit_joint_position, with an array containing L1-3 for each finger
     hand = jamkit_joint_position()
-    i = 1
-    for x in range(0, 3):
-        hand.little[i] = angles[i]
-        i+=1
-    for x in range(0, 3):
-        hand.ring[i] = angles[i]
-        i+=1
-    for x in range(0, 3):
-        hand.middle[i] = angles[i]
-        i+=1
-    for x in range(0, 3):
-        hand.index[i] = angles[i]
-        i+=1
-    for x in range(0, 4):
-        hand.thumb[i] = angles[i]
-        i+=1
+    i = 0
+    for x in range(3):
+        hand.little.append(angles[i])
+        i += 1
+
+    for x in range(3):
+        hand.ring.append(angles[i])
+        i += 1
+
+    for x in range(3):
+        hand.middle.append(angles[i])
+        i += 1
+
+    for x in range(3):
+        hand.index.append(angles[i])
+        i += 1
+
+    for x in range(4):
+        hand.thumb.append(angles[i])
+        i += 1
     return hand
 
-def rotationcalculator(rot_data):
+def rotationcalculator(inputdata):
     # rot_data=rot_data
+    rot_data = list(inputdata)
     num_rot=16
     # Data is in order of ports on KA-12 shield from port 1.
     #Defined KA-12 ports for rotational potentiometers, L1 is the base joint and
@@ -80,17 +90,17 @@ def rotationcalculator(rot_data):
 
         #ROT 15 has a range of 60 degrees, from potentiometer readings of 30 degree to
         #-30 degree, mapped between 0 degree to 60 degree respectively.
-    rot_data[num_rot-2]=30-np.interp(rot_data[i],[0,5],[-166.65,166.65])
+    rot_data[num_rot-2]=30-np.interp(rot_data[num_rot-2],[0,5],[-166.65,166.65])
 
         #ROT 16 has a range of 90 degrees, from potentiometer readings of
-    rot_data[num_rot-1]=abs(np.interp(rot_data[i],[0,5],[-166.65,166.65]))
+    rot_data[num_rot-1]=abs(np.interp(rot_data[num_rot-1],[0,5],[-166.65,166.65]))
 
     #It has been configured such that all potentiomers; except the Thumb AA joint
     #will output either all positive or negative angles that are then converted to their
     #absolute values. A displacement range greater than 90 degrees is not required for
     #the desired functionality, so a more complicated solution involving both positive and minus
     #values from a potentiometer was not required.
-
+    #print(rot_data)
     return rot_data
     #OUTPUT rot_data array of potentiometer angles in an array.
 def listener():
@@ -100,5 +110,6 @@ def listener():
             rospy.spin()
 
 if __name__ == '__main__':
-    print("Running")
+    print("Running Rot_process")
+    print("Awaiting Messages")
     listener()

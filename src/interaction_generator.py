@@ -18,24 +18,28 @@ def sensor_generator():
 
     #initialise node
     rospy.init_node('interaction_generator', anonymous=True)
-    rate = rospy.Rate(1)  #rate of 1hz ie, every second
+    rate = rospy.Rate(0.2)  #rate of 1hz ie, every second
     sensorvals = sensor_raw()  ##declare variable to contain the random generated values
 
     print("node up and generating")
-    for i in range(0,29):
+    for i in range(0,27):
         sensorvals.message.append(i)
 
     while not rospy.is_shutdown():
-        for i in range(0,17):
-            sensorvals.message[i] = random.uniform(0,1) #generates random potentiometer voltage
-        for i in range(17,19):
-            sensorvals.message[i] = random.uniform(0,1) #generates random 1D sensor voltage
-        for i in range(19,29):
-            sensorvals.message[i] = random.uniform(0,2) #generates random 3d sensor voltage
+        for i in range(0,16):
+            sensorvals.message[i] = random.uniform(0,5) #generates random potentiometer voltage
+        for i in range(16,18):
+            sensorvals.message[i] = random.uniform(0.2,4.8) #generates random 1D sensor voltage
+        for i in range(18,27):
+            sensorvals.message[i] = random.uniform(-1000,1000) #generates random 3d sensor voltage
 
         PubOverall.publish(sensorvals) #publish random values to topic \hand_sensing_output
-        rospy.loginfo(sensorvals.message) #log random values and print to terminal
-
+        #rospy.loginfo(sensorvals.message) #log random values and print to terminal
+        print("Node: interaction_generator")
+        print("New Interaction Values - Published to hand_sensing_output")
+        for i in sensorvals.message:
+            print(i)
+        print('')
         rate.sleep()
 
 

@@ -1,0 +1,142 @@
+thumb1_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: thumb1_joint
+    joint_speed: 0.17
+    motor:
+        id: 1
+        init: 0
+        min: 0
+        max: 1023
+
+thumb2_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: thumb2_joint
+    joint_speed: 0.17
+    motor:
+        id: 2
+        init: 0
+        min: 0
+        max: 1023
+
+thumb3_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: thumb3_joint
+    joint_speed: 0.17
+    motor:
+        id: 3
+        init: 0
+        min: 0
+        max: 1023
+
+index1_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: index1_joint
+    joint_speed: 0.17
+    motor:
+        id: 4
+        init: 0
+        min: 0
+        max: 1023
+
+index2flex_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: index2flex_joint
+    joint_speed: 0.17
+    motor:
+        id: 5
+        init: 0
+        min: 0
+        max: 1023
+
+index2extend_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: index2extend_joint
+    joint_speed: 0.17
+    motor:
+        id: 6
+        init: 0
+        min: 0
+        max: 1023
+
+middle1_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: middle1_joint
+    joint_speed: 0.17
+    motor:
+        id: 7
+        init: 0
+        min: 0
+        max: 1023
+
+middle2flex_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: middle2flex_joint
+    joint_speed: 0.17
+    motor:
+        id: 8
+        init: 0
+        min: 0
+        max: 1023
+
+middle2extend_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: middle2extend_joint
+    joint_speed: 0.17
+    motor:
+        id: 9
+        init: 0
+        min: 0
+        max: 1023
+
+ring_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: ring_joint
+    joint_speed: 0.17
+    motor:
+        id: 10
+        init: 0
+        min: 0
+        max: 1023
+
+little_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: little_joint
+    joint_speed: 0.17
+    motor:
+        id: 11
+        init: 0
+        min: 0
+        max: 1023

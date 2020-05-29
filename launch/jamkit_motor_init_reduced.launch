@@ -4,17 +4,10 @@
     <node name="hand_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
           args="--manager=dxl_manager
                 --port pan_hand_port
-                thumb1_controller
                 thumb2_controller
                 thumb3_controller
                 index1_controller
                 index2flex_controller
-                index2extend_controller
-                middle1_controller
-                middle2flex_controller
-                middle2extend_controller
-                ring_controller
-                little_controller
                 "
           output="screen"/>
 </launch>
